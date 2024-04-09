@@ -10,3 +10,16 @@ type Event struct {
 	DateTime    time.Time `json:"date_time"`
 	UserID      int       `json:"user_id"`
 }
+
+var events = []Event{}
+
+func (e Event) Save() {
+
+	// add the event to the database
+	events = append(events, e)
+
+}
+
+func GetAllEvents() []Event {
+	return events
+}
