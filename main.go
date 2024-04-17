@@ -3,11 +3,14 @@ package main
 import (
 	"net/http"
 
+	"ebrarcode.dev/restapi-go/db"
 	"ebrarcode.dev/restapi-go/models"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+
+	db.InitDB()
 	server := gin.Default()
 
 	server.GET("/events", getEvents)
