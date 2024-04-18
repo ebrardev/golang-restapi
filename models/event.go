@@ -1,9 +1,13 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"ebrarcode.dev/restapi-go/db"
+)
 
 type Event struct {
-	ID          int       `json:"id"`
+	ID          int64     `json:"id"`
 	Name        string    `binding:"required" json:"name`
 	Description string    `binding:"required" json:"description"`
 	Location    string    `binding:"required" json:"location`
@@ -13,10 +17,23 @@ type Event struct {
 
 var events = []Event{}
 
-func (e Event) Save() {
+func (e Event) Save() error {
 
-	// add the event to the database
-	events = append(events, e)
+	query := "INSERT INTO events (name, description, location, date_time, user_id) VALUES (?, ?, ?, ?, ?)"
+
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	result, err := stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.UserID)
+	if err != nil {
+		return err
+	}
+	id, err := result.LastInsertId()
+	e.ID = id
+	return err
 
 }
 
