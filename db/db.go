@@ -42,7 +42,7 @@ func createTables() {
 			description TEXT NOT NULL,
 			location TEXT NOT NULL,
 			date_time TEXT NOT NULL,
-			user_id INTEGER
+			user_id INTEGER,
 			FK(user_id) REFERENCES users(id)
 			);`
 
